@@ -1,0 +1,11 @@
+<nz-list nzItemLayout="horizontal">
+  @for(data of listData(); track data) {
+    <nz-list-item>
+      <nz-list-item-meta
+        [nzAvatar]="data.avatar"
+        [nzTitle]="data.title"
+        [nzDescription]="data.description"
+      ></nz-list-item-meta>
+    </nz-list-item>
+  }
+</nz-list>
