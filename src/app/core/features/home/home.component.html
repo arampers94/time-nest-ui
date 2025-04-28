@@ -1,7 +1,21 @@
-<div class="px-4 py-2">
-  <nz-input-group [nzSuffix]="suffixIconSearch">
+<div class="px-4 py-2 overflow-y-auto h-full">
+  <nz-input-group [nzSuffix]="suffixIconSearch" class="mb-4">
     <input type="text" placeholder="Find coworkers" nz-input />
   </nz-input-group>
+  <section class="mb-4">
+    <h3 class="text-xl text-gray-500">Out of Office Today</h3>
+    <app-list [listData]="currentOOOListData"></app-list>
+  </section>
+  <nz-divider></nz-divider>
+  <section>
+    <h3 class="text-xl text-gray-500">Upcoming Out of Office</h3>
+    <app-list [listData]="upcomingOOOListData"></app-list>
+  </section>
+  <nz-divider></nz-divider>
+  <section>
+    <h3 class="text-xl text-gray-500">Team members</h3>
+    <app-list [listData]="teamMembersListData"></app-list>
+  </section>
 </div>
 
 <ng-template #suffixIconSearch>
