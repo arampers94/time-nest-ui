@@ -1,1 +1,11 @@
-<p>body works!</p>
+<nz-tabset nzCentered>
+  @for(tab of tabs; track tab) {
+    <nz-tab [nzTitle]="titleTemplate" (nzSelectChange)="onTabChange($event)">
+      <ng-template #titleTemplate>
+        <span class="mr-2">{{ tab.title }}</span>
+        <nz-icon class="m-0!" [nzType]="tab.icon" nzTheme="outline" />
+      </ng-template>
+      <ng-container *ngComponentOutlet="tab.component"></ng-container>
+    </nz-tab>
+  }
+</nz-tabset>
