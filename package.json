@@ -8,6 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "electron": "electron .",
     "electron-dev": "ng build --base-href ./ && electron .",
     "electron-build": "ng build --prod && electron ."
   },
