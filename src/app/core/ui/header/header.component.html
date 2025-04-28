@@ -1,0 +1,24 @@
+<div class="header-wrapper">
+  <div class="team-selector">
+    <a nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" class="team-selector__button">
+      <span class="team-selector__button-text">{{ selectedTeam }}</span>
+      <nz-icon nzType="down"></nz-icon>
+    </a>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <ul nz-menu class="team-selector__dropdown-list">
+        @for(team of teams; track team.id) {
+          <li (click)="onSelectTeam(team)">
+            {{ team.name }}
+          </li>
+        }
+      </ul>
+    </nz-dropdown-menu>
+  </div>
+  <div class="app-title">
+    <h1 class="app-title_text">Time Nest</h1>
+  </div>
+  <div class="icons">
+    <nz-icon nzType="plus" nzTheme="outline" />
+    <nz-icon nzType="user" nzTheme="outline" />
+  </div>
+</div>
