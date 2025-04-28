@@ -1,24 +1,58 @@
-<div class="header-wrapper">
-  <div class="team-selector">
-    <a nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight" class="team-selector__button">
-      <span class="team-selector__button-text">{{ selectedTeam }}</span>
+<div class="flex columns-3 items-center px-5 bg-sky-200 h-auto py-3">
+  <div class="w-full">
+    <button
+      nz-button
+      nz-dropdown
+      nzType="default"
+      nzTrigger="click"
+      [(nzVisible)]="isTeamDropdownVisible"
+      [nzDropdownMenu]="menu" 
+      nzPlacement="bottomRight" 
+    >
+      <span class="pr-2 text-left">{{ selectedTeam }}</span>
       <nz-icon nzType="down"></nz-icon>
-    </a>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu class="team-selector__dropdown-list">
-        @for(team of teams; track team.id) {
-          <li (click)="onSelectTeam(team)">
-            {{ team.name }}
-          </li>
-        }
-      </ul>
-    </nz-dropdown-menu>
+    </button>
   </div>
-  <div class="app-title">
-    <h1 class="app-title_text">Time Nest</h1>
+  <div class="flex flex-col items-center w-full text-center">
+    <span class="text-3xl">Time Nest</span>
+    <span class="text-lg text-slate-500">
+      {{ currentDate | date: 'longDate' }}
+    </span>
   </div>
-  <div class="icons">
-    <nz-icon nzType="plus" nzTheme="outline" />
-    <nz-icon nzType="user" nzTheme="outline" />
+  <div class="flex gap-4 w-full justify-end">
+    <nz-icon 
+      nz-dropdown 
+      [nzDropdownMenu]="plusMenu"
+      [nzClickHide]="false"
+      [(nzVisible)]="isActionDropdownVisible"
+      nzType="plus" 
+      nzTheme="outline" 
+      class="cursor-pointer text-lg"
+      nzTrigger="click"
+    >
+    </nz-icon>
+    <nz-icon nzType="user" nzTheme="outline" class="cursor-pointer text-lg" />
   </div>
 </div>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    @for(team of teams; track team.id) {
+      <li class="px-4 py-2 hover:bg-sky-200 cursor-pointer" (click)="onSelectTeam(team)">
+        {{ team.name }}
+      </li>
+    }
+  </ul>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #plusMenu="nzDropdownMenu">
+  <ul nz-menu>
+    @for(action of actions; track action) {
+      <li class="px-4 py-2 hover:bg-sky-200 cursor-pointer" (click)="onSelectAction(action.name)">
+        <nz-icon [nzType]="action.icon" nzTheme="outline" class="mr-2"></nz-icon>
+        {{ action.name }}
+      </li>
+    }
+  </ul>
+</nz-dropdown-menu>
+
