@@ -1,1 +1,9 @@
-<p>home works!</p>
+<div class="px-4 py-2">
+  <nz-input-group [nzSuffix]="suffixIconSearch">
+    <input type="text" placeholder="Find coworkers" nz-input />
+  </nz-input-group>
+</div>
+
+<ng-template #suffixIconSearch>
+  <nz-icon nzType="search" />
+</ng-template>
