@@ -1,1 +1,24 @@
-<p>calendar works!</p>
+<div class="px-4 py-2">
+  <!-- Header -->
+  <div>
+    <div class="mb-2">
+      <!-- Title -->
+      <span class="text-2xl font-bold text-gray-800">
+        Cross Center's Calendar
+      </span>
+    </div>
+    <!-- Subtitle -->
+    <p class="text-sm text-gray-600 mb-4">
+      Select a date to view which team members will be out of office
+      or add your own leave.
+    </p>
+  </div>
+  <!-- Body -->
+  <div>
+    <nz-calendar
+      [(ngModel)]="date"
+      (ngModelChange)="onDateChange($event)"
+      [nzMode]="'month'"
+    ></nz-calendar>
+  </div>
+</div>
