@@ -16,12 +16,18 @@ type UsersState = {
   users: User[];
   getUsersLoading: boolean;
   getUsersResult: ActionResult;
+  user: User | null;
+  getUserLoading: boolean;
+  getUserResult: ActionResult;
 };
 
 const initialState: UsersState = {
   users: [],
   getUsersLoading: false,
   getUsersResult: null,
+  user: null,
+  getUserLoading: false,
+  getUserResult: null,
 };
 
 export const UsersStore = signalStore(
@@ -44,6 +50,27 @@ export const UsersStore = signalStore(
                 patchState(store, createValueFailure(error, 'getUsersResult'));
               },
               finalize: () => patchState(store, { getUsersLoading: false }),
+            })
+          );
+        })
+      )
+    ),
+    getUserById: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { getUserLoading: true })),
+        switchMap((userId: number) => {
+          return usersService.getUserById(userId).pipe(
+            tapResponse({
+              next: (user) => {
+                patchState(
+                  store,
+                  createValueSuccess('user', user, 'getUserResult')
+                );
+              },
+              error: (error: HttpErrorResponse) => {
+                patchState(store, createValueFailure(error, 'getUserResult'));
+              },
+              finalize: () => patchState(store, { getUserLoading: false }),
             })
           );
         })
