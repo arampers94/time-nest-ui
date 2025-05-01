@@ -1,3 +1,4 @@
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { CreateOrganizationPayload, Organization } from '../core/interfaces';
 import {
@@ -45,6 +46,7 @@ const initialState: OrganizationsState = {
 export const OrganizationsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withDevtools('Organizations'),
   withMethods((store, organizationsService = inject(OrganizationsService)) => ({
     getOrganizations: rxMethod<void>(
       pipe(

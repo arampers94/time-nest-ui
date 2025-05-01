@@ -13,6 +13,7 @@ import { inject } from '@angular/core';
 import { TimeOffEventService } from '../core/services';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap, tap } from 'rxjs';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 type TimeOffEventsState = {
   timeOffEvent: TimeOffEvent | null;
@@ -53,6 +54,7 @@ export const initialState: TimeOffEventsState = {
 export const TimeOffEventsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withDevtools('TimeOffEvents'),
   withMethods((store, timeOffEventsService = inject(TimeOffEventService)) => ({
     getTimeOffEventById: rxMethod<number>(
       pipe(

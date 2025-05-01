@@ -15,6 +15,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { pipe, tap, switchMap } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 type TeamsState = {
   teams: Team[];
@@ -57,6 +58,7 @@ const initialState: TeamsState = {
 export const TeamsStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withDevtools('Teams'),
   withMethods((store, teamsService = inject(TeamsService)) => ({
     getTeamsByOrganizationId: rxMethod<number>(
       pipe(

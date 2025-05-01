@@ -11,6 +11,7 @@ import {
   createValueSuccess,
 } from './helpers';
 import { HttpErrorResponse } from '@angular/common/http';
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
 
 type UsersState = {
   users: User[];
@@ -33,6 +34,7 @@ const initialState: UsersState = {
 export const UsersStore = signalStore(
   { providedIn: 'root' },
   withState(initialState),
+  withDevtools('Users'),
   withMethods((store, usersService = inject(UsersService)) => ({
     getUsersByOrganizationId: rxMethod<number>(
       pipe(
