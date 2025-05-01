@@ -1,3 +1,5 @@
+import { User } from './user.interface';
+
 export interface TimeOffEvent {
   id: number;
   title: string;
@@ -7,6 +9,7 @@ export interface TimeOffEvent {
   start_time: string;
   end_time: string;
   team_id: number;
+  user: User;
   user_id: number;
   created_date: Date;
   updated_date: Date;

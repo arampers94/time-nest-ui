@@ -1,5 +1,5 @@
 export interface ListData {
-  title: string;
+  name: string;
   avatar: string;
   description: string;
 }
