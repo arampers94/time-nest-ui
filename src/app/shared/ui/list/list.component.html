@@ -1,11 +1,23 @@
-<nz-list nzItemLayout="horizontal">
-  @for(data of listData(); track data) {
-    <nz-list-item>
-      <nz-list-item-meta
-        [nzAvatar]="data.avatar"
-        [nzTitle]="data.name"
-        [nzDescription]="data.description"
-      ></nz-list-item-meta>
-    </nz-list-item>
-  }
-</nz-list>
+@if (listData()?.length === 0) {
+  <nz-empty
+    [nzNotFoundContent]="noContent"
+    nzImageStyle="width: 100px; height: 100px; margin-bottom: 16px;"
+  ></nz-empty>
+}
+@else {
+  <nz-list nzItemLayout="horizontal">
+    @for(data of listData(); track data.name) {
+      <nz-list-item>
+        <nz-list-item-meta
+          [nzAvatar]="data.avatar"
+          [nzTitle]="data.name"
+          [nzDescription]="data.description"
+        ></nz-list-item-meta>
+      </nz-list-item>
+    }
+  </nz-list>
+}
+
+<ng-template #noContent>
+  <span>{{ noContentText() }}</span>
+</ng-template>
