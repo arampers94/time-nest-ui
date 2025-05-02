@@ -4,7 +4,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { ListComponent } from '../../../shared/ui/list/list.component';
 import { ListData } from '../../interfaces';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
-import { TimeOffEventsStore } from '../../../store';
+import { TeamsStore, TimeOffEventsStore } from '../../../store';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -14,28 +14,12 @@ import { DatePipe } from '@angular/common';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+  public readonly timeOffEventsStore = inject(TimeOffEventsStore);
+  public readonly teamsStore = inject(TeamsStore);
+
   public currentTimeOffListData: ListData[] = [];
   public futureTimeOffListData: ListData[] = [];
-
-  public teamMembersListData: ListData[] = [
-    {
-      name: 'Amar Rampersaud',
-      avatar: 'https://joesch.moe/api/v1/random',
-      description: 'Working today',
-    },
-    {
-      name: 'Matt Collins',
-      avatar: 'https://joesch.moe/api/v1/random',
-      description: 'Working today',
-    },
-    {
-      name: 'Mike Lightner',
-      avatar: 'https://joesch.moe/api/v1/random',
-      description: 'Working today',
-    },
-  ];
-
-  public readonly timeOffEventsStore = inject(TimeOffEventsStore);
+  public teamMembersListData: ListData[] = [];
 
   constructor() {
     effect(() => {
@@ -60,6 +44,13 @@ export class HomeComponent implements OnInit {
             'mediumDate'
           )}`,
         }));
+
+      this.teamMembersListData =
+        this.teamsStore.team()?.users.map((member) => ({
+          name: `${member.first_name} ${member.last_name}`,
+          avatar: 'https://joesch.moe/api/v1/random',
+          description: member.title || '',
+        })) ?? [];
     });
   }
 
@@ -70,5 +61,6 @@ export class HomeComponent implements OnInit {
   private fetchData(): void {
     this.timeOffEventsStore.getCurrentTimeOffEventsByTeamId(1);
     this.timeOffEventsStore.getFutureTimeOffEventsByTeamId(1);
+    this.teamsStore.getTeamById(1);
   }
 }
