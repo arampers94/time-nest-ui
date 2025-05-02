@@ -4,7 +4,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { TeamsStore } from '../../../store';
+import { TeamsStore, TimeOffEventsStore } from '../../../store';
 import { Team } from '../../interfaces';
 
 @Component({
@@ -21,8 +21,11 @@ import { Team } from '../../interfaces';
 })
 export class HeaderComponent implements OnInit {
   public readonly teamsStore = inject(TeamsStore);
-  public teams: Team[] = [];
+  public readonly timeOffEventsStore = inject(TimeOffEventsStore);
 
+  public isTeamDropdownVisible = false;
+  public isActionDropdownVisible = false;
+  public currentDate = new Date();
   public actions = [
     { name: 'Schedule Time Off', icon: 'clock-circle' },
     { name: 'Create Team', icon: 'usergroup-add' },
@@ -30,15 +33,15 @@ export class HeaderComponent implements OnInit {
     { name: 'Join Team', icon: 'plus' },
   ];
 
-  public selectedTeam: string = '';
-  public isTeamDropdownVisible = false;
-  public isActionDropdownVisible = false;
-  public currentDate: Date = new Date();
-
   constructor() {
+    // Runs when user selects a team from the dropdown
     effect(() => {
-      this.teams = this.teamsStore.teams();
-      this.selectedTeam = this.teams[0]?.name || '';
+      if (
+        this.teamsStore.selectedTeam() &&
+        this.teamsStore.selectedTeam()!.id
+      ) {
+        this.fetchTeamData(this.teamsStore.selectedTeam()!.id);
+      }
     });
   }
 
@@ -46,8 +49,8 @@ export class HeaderComponent implements OnInit {
     this.fetchData();
   }
 
-  public onSelectTeam(team: { name: string; id: number }) {
-    this.selectedTeam = team.name;
+  public onSelectTeam(team: Team) {
+    this.teamsStore.setSelectedTeam(team);
     this.isTeamDropdownVisible = false;
   }
 
@@ -57,5 +60,11 @@ export class HeaderComponent implements OnInit {
 
   private fetchData(): void {
     this.teamsStore.getTeamsByUserId(1);
+  }
+
+  private fetchTeamData(teamId: number): void {
+    this.timeOffEventsStore.getCurrentTimeOffEventsByTeamId(teamId);
+    this.timeOffEventsStore.getFutureTimeOffEventsByTeamId(teamId);
+    this.teamsStore.getTeamById(teamId);
   }
 }

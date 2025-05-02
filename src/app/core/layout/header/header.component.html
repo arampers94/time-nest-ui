@@ -9,7 +9,7 @@
       [nzDropdownMenu]="menu" 
       nzPlacement="bottomRight" 
     >
-      <span class="pr-2 text-left">{{ selectedTeam }}</span>
+      <span class="pr-2 text-left">{{ teamsStore.selectedTeam()?.name }}</span>
       <nz-icon nzType="down"></nz-icon>
     </button>
   </div>
@@ -37,7 +37,7 @@
 
 <nz-dropdown-menu #menu="nzDropdownMenu">
   <ul nz-menu>
-    @for(team of teams; track team.id) {
+    @for(team of teamsStore.teams(); track team.id) {
       <li class="px-4 py-2 hover:bg-sky-200 cursor-pointer" (click)="onSelectTeam(team)">
         {{ team.name }}
       </li>

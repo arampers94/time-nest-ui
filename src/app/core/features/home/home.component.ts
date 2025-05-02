@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { ListComponent } from '../../../shared/ui/list/list.component';
@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   public readonly timeOffEventsStore = inject(TimeOffEventsStore);
   public readonly teamsStore = inject(TeamsStore);
 
@@ -52,15 +52,5 @@ export class HomeComponent implements OnInit {
           description: member.title || '',
         })) ?? [];
     });
-  }
-
-  public ngOnInit(): void {
-    this.fetchData();
-  }
-
-  private fetchData(): void {
-    this.timeOffEventsStore.getCurrentTimeOffEventsByTeamId(1);
-    this.timeOffEventsStore.getFutureTimeOffEventsByTeamId(1);
-    this.teamsStore.getTeamById(1);
   }
 }

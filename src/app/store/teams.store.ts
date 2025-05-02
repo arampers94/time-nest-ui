@@ -34,6 +34,7 @@ type TeamsState = {
   removeTeamUsersResult: ActionResult;
   deleteTeamLoading: boolean;
   deleteTeamResult: ActionResult;
+  selectedTeam: Team | null;
 };
 
 const initialState: TeamsState = {
@@ -53,6 +54,7 @@ const initialState: TeamsState = {
   removeTeamUsersResult: null,
   deleteTeamLoading: false,
   deleteTeamResult: null,
+  selectedTeam: null,
 };
 
 export const TeamsStore = signalStore(
@@ -113,6 +115,7 @@ export const TeamsStore = signalStore(
                   store,
                   createValueSuccess('teams', teams, 'getTeamsResult')
                 );
+                patchState(store, { selectedTeam: teams[0] });
               },
               error: (error: HttpErrorResponse) => {
                 patchState(store, createValueFailure(error, 'getTeamsResult'));
@@ -123,6 +126,9 @@ export const TeamsStore = signalStore(
         })
       )
     ),
+    setSelectedTeam: (team: Team | null) => {
+      patchState(store, { selectedTeam: team });
+    },
     createTeam: rxMethod<CreateTeamPayload>(
       pipe(
         tap(() => patchState(store, { createTeamLoading: true })),
