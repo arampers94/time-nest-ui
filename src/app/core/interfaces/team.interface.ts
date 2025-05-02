@@ -1,8 +1,11 @@
+import { User } from './user.interface';
+
 export interface Team {
   id: number;
   name: string;
   description: string;
   organizationId: number;
+  users: User[];
   created_date: Date;
   updated_date: Date;
   deleted_date?: Date;
