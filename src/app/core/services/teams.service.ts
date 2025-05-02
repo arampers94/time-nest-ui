@@ -24,6 +24,10 @@ export class TeamsService extends BaseService {
     return this.http.get<Team>(`${this.baseUrl}/teams/${teamId}`);
   }
 
+  public getTeamsByUserId(userId: number): Observable<Team[]> {
+    return this.http.get<Team[]>(`${this.baseUrl}/teams/user/${userId}`);
+  }
+
   public createTeam(payload: CreateTeamPayload): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/teams`, payload);
   }

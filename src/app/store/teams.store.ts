@@ -102,6 +102,27 @@ export const TeamsStore = signalStore(
         })
       )
     ),
+    getTeamsByUserId: rxMethod<number>(
+      pipe(
+        tap(() => patchState(store, { getTeamsLoading: true })),
+        switchMap((userId) => {
+          return teamsService.getTeamsByUserId(userId).pipe(
+            tapResponse({
+              next: (teams) => {
+                patchState(
+                  store,
+                  createValueSuccess('teams', teams, 'getTeamsResult')
+                );
+              },
+              error: (error: HttpErrorResponse) => {
+                patchState(store, createValueFailure(error, 'getTeamsResult'));
+              },
+              finalize: () => patchState(store, { getTeamsLoading: false }),
+            })
+          );
+        })
+      )
+    ),
     createTeam: rxMethod<CreateTeamPayload>(
       pipe(
         tap(() => patchState(store, { createTeamLoading: true })),
