@@ -42,6 +42,18 @@ export class MenuComponent {
 
   public selectedItemId: number = 1;
 
+  constructor() {
+    this.router.events.subscribe(() => {
+      const currentUrl = this.router.url;
+      const currentItem = this.menuItems.find(
+        (item) => item.link === currentUrl
+      );
+      if (currentItem) {
+        this.selectedItemId = currentItem.id;
+      }
+    });
+  }
+
   public onClick(item: MenuItem): void {
     this.selectedItemId = item.id;
     this.router.navigate([item.link]);
