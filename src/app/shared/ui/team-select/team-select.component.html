@@ -1,0 +1,26 @@
+<div class="w-full">
+  <button
+    class="cursor-pointer"
+    nz-button
+    nz-dropdown
+    nzType="default"
+    nzTrigger="click"
+    [(nzVisible)]="isTeamDropdownVisible"
+    [nzDropdownMenu]="menu" 
+    nzPlacement="bottomLeft" 
+  >
+    <span class="pr-2 text-left">{{ teamsStore.selectedTeam()?.name }}</span>
+    <nz-icon nzType="down"></nz-icon>
+  </button>
+</div>
+
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    @for(team of teamsStore.teams(); track team.id) {
+      <li class="px-4 py-2 hover:bg-sky-200 cursor-pointer" (click)="onSelectTeam(team)">
+        {{ team.name }}
+      </li>
+    }
+  </ul>
+</nz-dropdown-menu>
+
