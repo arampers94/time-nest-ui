@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Team } from '../../../core/interfaces';
 import { TeamsStore, TimeOffEventsStore } from '../../../store';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
   templateUrl: './team-select.component.html',
   styleUrl: './team-select.component.scss',
 })
-export class TeamSelectComponent implements OnInit {
+export class TeamSelectComponent {
   public readonly teamsStore = inject(TeamsStore);
   public readonly timeOffEventsStore = inject(TimeOffEventsStore);
 
@@ -31,18 +31,9 @@ export class TeamSelectComponent implements OnInit {
     });
   }
 
-  public ngOnInit(): void {
-    this.fetchData();
-  }
-
   public onSelectTeam(team: Team) {
-    console.log('model changed');
     this.teamsStore.setSelectedTeam(team);
     this.isTeamDropdownVisible = false;
-  }
-
-  private fetchData(): void {
-    this.teamsStore.getTeamsByUserId(1);
   }
 
   private fetchTeamData(teamId: number): void {
