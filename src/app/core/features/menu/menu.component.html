@@ -1,3 +1,22 @@
 <div class="bg-slate-950 text-slate-200 h-full p-4">
-  <app-team-select></app-team-select>
+  <div class="mb-8">
+    <app-team-select></app-team-select>
+  </div>
+  <div>
+    <ul class="flex flex-col gap-2">
+      @for(item of menuItems; track item) {
+        <div 
+          class="flex items-center justify-between p-2 text-slate-200 rounded-md cursor-pointer"
+          [ngClass]="{
+            'bg-emerald-800': selectedItemId === item.id,
+            'hover:bg-emerald-800': selectedItemId !== item.id
+          }"
+          (click)="onClick(item)"
+        >
+          <li class="text-sm font-semibold">{{ item.title }}</li>
+          <nz-icon class="m-0" [nzType]="item.icon" nzTheme="outline" />
+        </div>
+      }
+    </ul>
+  </div>
 </div>
