@@ -4,7 +4,7 @@
     <div class="mb-2">
       <!-- Title -->
       <span class="text-2xl font-bold text-gray-800">
-        Cross Center's Calendar
+        {{ `${selectedTeam()?.name}'s Calendar` }}
       </span>
     </div>
     <!-- Subtitle -->
@@ -17,8 +17,46 @@
   <div>
     <nz-calendar
       [(ngModel)]="date"
-      (ngModelChange)="onDateChange($event)"
+      (nzSelectChange)="onDateChange($event)"
       [nzMode]="'month'"
-    ></nz-calendar>
+    >
+      <ul *nzDateCell="let date" class="flex flex-col gap-2">
+        @for(event of calendarTimeOffEvents; track event.id) {
+          @if(isDateWithinEventRange(date, event)) {
+            <li class="flex items-center space-x-2">
+              <img
+                src="https://joesch.moe/api/v1/random"
+                alt="{{ event.user.first_name }} {{ event.user.last_name }}"
+                class="w-4 h-4 rounded-full"
+              />
+              <span class="text-xs text-gray-800">
+                {{ event.user.first_name }} {{ event.user.last_name }}
+              </span>
+            </li>
+          }
+        }
+      </ul>
+    </nz-calendar>
   </div>
 </div>
+
+<ng-template #dateCellTemplate let-date="date" let-selected="selected">
+  <div class="h-full flex flex-col items-center justify-center">
+    <ul>
+      @for(event of timeOffEventsStore.calendarTimeOffEvents(); track event.id) {
+        @if(event.start_date <= date && event.end_date >= date) {
+          <li class="flex items-center space-x-2">
+            <img
+              src="https://joesch.moe/api/v1/random"
+              alt="{{ event.user.first_name }} {{ event.user.last_name }}"
+              class="w-8 h-8 rounded-full"
+            />
+            <span class="text-sm text-gray-800">
+              {{ event.user.first_name }} {{ event.user.last_name }}
+            </span>
+          </li>
+        }
+      }
+    </ul>
+  </div>
+</ng-template>
