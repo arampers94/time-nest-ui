@@ -25,6 +25,9 @@ type TimeOffEventsState = {
   futureTimeOffEvents: TimeOffEvent[];
   getFutureTimeOffEventsLoading: boolean;
   getFutureTimeOffEventsResult: ActionResult;
+  calendarTimeOffEvents: TimeOffEvent[];
+  getCalendarTimeOffEventsLoading: boolean;
+  getCalendarTimeOffEventsResult: ActionResult;
   createTimeOffEventLoading: boolean;
   createTimeOffEventResult: ActionResult;
   updateTimeOffEventLoading: boolean;
@@ -43,6 +46,9 @@ export const initialState: TimeOffEventsState = {
   futureTimeOffEvents: [],
   getFutureTimeOffEventsLoading: false,
   getFutureTimeOffEventsResult: null,
+  calendarTimeOffEvents: [],
+  getCalendarTimeOffEventsLoading: false,
+  getCalendarTimeOffEventsResult: null,
   createTimeOffEventLoading: false,
   createTimeOffEventResult: null,
   updateTimeOffEventLoading: false,
@@ -142,6 +148,41 @@ export const TimeOffEventsStore = signalStore(
                 },
                 finalize: () =>
                   patchState(store, { getFutureTimeOffEventsLoading: false }),
+              })
+            );
+        })
+      )
+    ),
+    getCalendarTimeOffEventsByTeamId: rxMethod<{
+      teamId: number;
+      month: number;
+      year: string;
+    }>(
+      pipe(
+        tap(() => patchState(store, { getCalendarTimeOffEventsLoading: true })),
+        switchMap(({ teamId, month, year }) => {
+          return timeOffEventsService
+            .getCalendarTimeOffEventsByTeamId(teamId, month, year)
+            .pipe(
+              tap({
+                next: (calendarTimeOffEvents) => {
+                  patchState(
+                    store,
+                    createValueSuccess(
+                      'calendarTimeOffEvents',
+                      calendarTimeOffEvents,
+                      'getCalendarTimeOffEventsResult'
+                    )
+                  );
+                },
+                error: (error) => {
+                  patchState(
+                    store,
+                    createValueFailure(error, 'getCalendarTimeOffEventsResult')
+                  );
+                },
+                finalize: () =>
+                  patchState(store, { getCalendarTimeOffEventsLoading: false }),
               })
             );
         })

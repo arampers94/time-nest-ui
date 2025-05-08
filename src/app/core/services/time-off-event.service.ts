@@ -38,6 +38,17 @@ export class TimeOffEventService extends BaseService {
     );
   }
 
+  public getCalendarTimeOffEventsByTeamId(
+    teamId: number,
+    month: number,
+    year: string
+  ): Observable<TimeOffEvent[]> {
+    return this.http.get<TimeOffEvent[]>(
+      `${this.baseUrl}/time-off-events/calendar/${teamId}`,
+      { params: { month, year } }
+    );
+  }
+
   public createTimeOffEvent(
     payload: CreateTimeOffEventPayload
   ): Observable<void> {
