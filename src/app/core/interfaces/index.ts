@@ -6,3 +6,4 @@ export * from './team.interface';
 export * from './time-off-event.interface';
 export * from './api-error.interface';
 export * from './key-value-pair.interface';
+export * from './user-color-avatar.interface';
