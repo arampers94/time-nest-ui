@@ -22,7 +22,7 @@
     >
       <ul 
         *nzDateCell="let date" 
-        class="min-h-[80%] flex flex-col gap-2" 
+        class="min-h-[80%] flex flex-row gap-2" 
         nz-popover 
         nzPopoverPlacement="right" 
         [nzPopoverTitle]="(date | date: 'fullDate') || 'Time off Scheduled'"
@@ -34,15 +34,12 @@
       >
         @for(event of calendarTimeOffEvents; track event.id) {
           @if(isDateWithinEventRange(date, event)) {
-            <li class="flex items-center space-x-2">
+            <li class="flex flex-wrap space-x-2">
               <img
                 src="https://joesch.moe/api/v1/random"
                 alt="{{ event.user.first_name }} {{ event.user.last_name }}"
-                class="w-4 h-4 rounded-full"
+                class="w-6 h-6 rounded-full"
               />
-              <span class="text-xs text-gray-800">
-                {{ event.user.first_name }} {{ event.user.last_name }}
-              </span>
             </li>
           }
         }
@@ -58,7 +55,7 @@
   @if (eventsForDate.length > 0) {
     <ul style="margin: 0;" class="max-h-48 overflow-y-auto">
       @for(event of eventsForDate; track event.id) {
-        <li class="flex items-center space-x-2">
+        <li class="flex items-center space-x-2 pr-8">
           <img
             src="https://joesch.moe/api/v1/random"
             alt="{{ event.user.first_name }} {{ event.user.last_name }}"
