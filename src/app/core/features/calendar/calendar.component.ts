@@ -6,10 +6,17 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { TeamsStore } from '../../../store/teams.store';
 import { TimeOffEvent } from '../../interfaces';
 import { TimeOffEventsStore } from '../../../store';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-calendar',
-  imports: [NzPageHeaderModule, NzCalendarModule, FormsModule, NzPopoverModule],
+  imports: [
+    NzPageHeaderModule,
+    NzCalendarModule,
+    FormsModule,
+    NzPopoverModule,
+    DatePipe,
+  ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
 })
@@ -20,6 +27,7 @@ export class CalendarComponent {
   public timeOffEventsStore = inject(TimeOffEventsStore);
   public calendarTimeOffEvents: TimeOffEvent[] = [];
   public teamId: number | null = null;
+  public popoverDate: Date | null = null;
 
   constructor() {
     effect(() => {
@@ -50,6 +58,19 @@ export class CalendarComponent {
     const startDate = new Date(event.start_date);
     const endDate = new Date(event.end_date);
     return date >= startDate && date <= endDate;
+  }
+
+  public getEventsForDate(date: Date | null): TimeOffEvent[] {
+    if (!date) return [];
+    return this.calendarTimeOffEvents.filter((event) =>
+      this.isDateWithinEventRange(date, event)
+    );
+  }
+
+  public setPopoverDate(date: Date): void {
+    setTimeout(() => {
+      this.popoverDate = date;
+    }, 250);
   }
 
   private getCalendarTimeOffEvents(): void {

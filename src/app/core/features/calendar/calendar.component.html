@@ -20,7 +20,18 @@
       (nzSelectChange)="onDateChange($event)"
       [nzMode]="'month'"
     >
-      <ul *nzDateCell="let date" class="flex flex-col gap-2">
+      <ul 
+        *nzDateCell="let date" 
+        class="min-h-[80%] flex flex-col gap-2" 
+        nz-popover 
+        nzPopoverPlacement="right" 
+        [nzPopoverTitle]="(date | date: 'fullDate') || 'Time off Scheduled'"
+        [nzPopoverContent]="eventPopoverTemplate" 
+        nzPopoverTrigger="hover"
+        (mouseenter)="setPopoverDate(date)"
+        [nzPopoverMouseLeaveDelay]="0"
+        [nzPopoverMouseEnterDelay]=".25"
+      >
         @for(event of calendarTimeOffEvents; track event.id) {
           @if(isDateWithinEventRange(date, event)) {
             <li class="flex items-center space-x-2">
@@ -35,28 +46,39 @@
             </li>
           }
         }
-      </ul>
+        </ul>
     </nz-calendar>
   </div>
 </div>
 
-<ng-template #dateCellTemplate let-date="date" let-selected="selected">
-  <div class="h-full flex flex-col items-center justify-center">
-    <ul>
-      @for(event of timeOffEventsStore.calendarTimeOffEvents(); track event.id) {
-        @if(event.start_date <= date && event.end_date >= date) {
-          <li class="flex items-center space-x-2">
-            <img
-              src="https://joesch.moe/api/v1/random"
-              alt="{{ event.user.first_name }} {{ event.user.last_name }}"
-              class="w-8 h-8 rounded-full"
-            />
-            <span class="text-sm text-gray-800">
+
+
+<ng-template #eventPopoverTemplate>
+  @let eventsForDate = getEventsForDate(popoverDate);
+  @if (eventsForDate.length > 0) {
+    <ul style="margin: 0;" class="max-h-48 overflow-y-auto">
+      @for(event of eventsForDate; track event.id) {
+        <li class="flex items-center space-x-2">
+          <img
+            src="https://joesch.moe/api/v1/random"
+            alt="{{ event.user.first_name }} {{ event.user.last_name }}"
+            class="w-6 h-6 rounded-full"
+          />
+          <div>
+            <h3 class="text-sm font-semibold text-gray-800">
               {{ event.user.first_name }} {{ event.user.last_name }}
-            </span>
-          </li>
-        }
+            </h3>
+            <p class="text-xs text-gray-600">
+              {{ event.start_date | date: 'shortDate' }} - {{ event.end_date | date: 'shortDate' }}
+            </p>
+          </div>
+        </li>
       }
     </ul>
-  </div>
+  }
+  @else {
+    <div class="max-w-20 my-2 text-center text-gray-500">
+      No events for this date
+    </div>
+  }
 </ng-template>
