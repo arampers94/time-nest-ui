@@ -6,7 +6,8 @@ import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { TeamsStore } from '../../../store/teams.store';
 import { TimeOffEvent } from '../../interfaces';
 import { TimeOffEventsStore } from '../../../store';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+import { getUserColorAvatar } from '../../helpers';
 
 @Component({
   selector: 'app-calendar',
@@ -16,6 +17,7 @@ import { DatePipe } from '@angular/common';
     FormsModule,
     NzPopoverModule,
     DatePipe,
+    CommonModule,
   ],
   templateUrl: './calendar.component.html',
   styleUrl: './calendar.component.scss',
@@ -28,6 +30,8 @@ export class CalendarComponent {
   public calendarTimeOffEvents: TimeOffEvent[] = [];
   public teamId: number | null = null;
   public popoverDate: Date | null = null;
+
+  public getUserColorAvatar = getUserColorAvatar;
 
   constructor() {
     effect(() => {

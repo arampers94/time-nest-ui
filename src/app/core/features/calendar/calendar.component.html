@@ -22,7 +22,7 @@
     >
       <ul 
         *nzDateCell="let date" 
-        class="min-h-[80%] flex flex-row gap-2" 
+        class="min-h-[80%] flex flex-row gap-1" 
         nz-popover 
         nzPopoverPlacement="right" 
         [nzPopoverTitle]="(date | date: 'fullDate') || 'Time off Scheduled'"
@@ -31,15 +31,17 @@
         (mouseenter)="setPopoverDate(date)"
         [nzPopoverMouseLeaveDelay]="0"
         [nzPopoverMouseEnterDelay]=".25"
+        title=""
       >
         @for(event of calendarTimeOffEvents; track event.id) {
           @if(isDateWithinEventRange(date, event)) {
             <li class="flex flex-wrap space-x-2">
-              <img
-                src="https://joesch.moe/api/v1/random"
-                alt="{{ event.user.first_name }} {{ event.user.last_name }}"
-                class="w-6 h-6 rounded-full"
-              />
+              @let userColorAvatar = getUserColorAvatar(event.user);
+              <div [class]="`w-5 h-5 rounded-full flex justify-center items-center text-slate-200 text-[.6rem] ${userColorAvatar.color}`">
+                <div>
+                  {{ userColorAvatar.initials }}
+                </div>
+              </div>
             </li>
           }
         }
@@ -48,19 +50,18 @@
   </div>
 </div>
 
-
-
 <ng-template #eventPopoverTemplate>
   @let eventsForDate = getEventsForDate(popoverDate);
   @if (eventsForDate.length > 0) {
     <ul style="margin: 0;" class="max-h-48 overflow-y-auto">
       @for(event of eventsForDate; track event.id) {
+        @let userColorAvatar = getUserColorAvatar(event.user);
         <li class="flex items-center space-x-2 pr-8">
-          <img
-            src="https://joesch.moe/api/v1/random"
-            alt="{{ event.user.first_name }} {{ event.user.last_name }}"
-            class="w-6 h-6 rounded-full"
-          />
+          <div [class]="`w-6 h-6 rounded-full flex justify-center items-center text-slate-200 text-[.7rem] ${userColorAvatar.color}`">
+            <div>
+              {{ userColorAvatar.initials }}
+            </div>
+          </div>
           <div>
             <h3 class="text-sm font-semibold text-gray-800">
               {{ event.user.first_name }} {{ event.user.last_name }}
