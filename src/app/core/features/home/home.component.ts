@@ -6,6 +6,7 @@ import { ListData } from '../../interfaces';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { TeamsStore, TimeOffEventsStore } from '../../../store';
 import { DatePipe } from '@angular/common';
+import { getUserColorAvatar } from '../../helpers';
 
 @Component({
   selector: 'app-home',
@@ -21,13 +22,15 @@ export class HomeComponent {
   public futureTimeOffListData: ListData[] = [];
   public teamMembersListData: ListData[] = [];
 
+  public getUserColorAvatar = getUserColorAvatar;
+
   constructor() {
     effect(() => {
       this.currentTimeOffListData = this.timeOffEventsStore
         .currentTimeOffEvents()
         .map((event) => ({
           name: `${event.user.first_name} ${event.user.last_name}`,
-          avatar: 'https://joesch.moe/api/v1/random',
+          user: event.user,
           description: `Returns on ${new DatePipe('en-US').transform(
             event.end_date,
             'mediumDate'
@@ -38,7 +41,7 @@ export class HomeComponent {
         .futureTimeOffEvents()
         .map((event) => ({
           name: `${event.user.first_name} ${event.user.last_name}`,
-          avatar: 'https://joesch.moe/api/v1/random',
+          user: event.user,
           description: `Out starting on ${new DatePipe('en-US').transform(
             event.start_date,
             'mediumDate'
@@ -46,10 +49,10 @@ export class HomeComponent {
         }));
 
       this.teamMembersListData =
-        this.teamsStore.team()?.users.map((member) => ({
-          name: `${member.first_name} ${member.last_name}`,
-          avatar: 'https://joesch.moe/api/v1/random',
-          description: member.title || '',
+        this.teamsStore.team()?.users.map((user) => ({
+          name: `${user.first_name} ${user.last_name}`,
+          user,
+          description: user.title || '',
         })) ?? [];
     });
   }
