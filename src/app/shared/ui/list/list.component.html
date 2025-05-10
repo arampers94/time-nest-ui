@@ -1,22 +1,35 @@
-@if (listData()?.length === 0) {
-  <nz-empty
-    [nzNotFoundContent]="noContent"
-    nzImageStyle="width: 100px; height: 100px; margin-bottom: 16px;"
-  ></nz-empty>
-}
-@else {
-  <nz-list nzItemLayout="horizontal">
-    @for(data of listData(); track data.name) {
-      <nz-list-item>
-        <nz-list-item-meta
-          [nzAvatar]="data.avatar"
-          [nzTitle]="data.name"
-          [nzDescription]="data.description"
-        ></nz-list-item-meta>
-      </nz-list-item>
-    }
-  </nz-list>
-}
+<div class="mx-4">
+  @if (listData()?.length === 0) {
+    <nz-empty
+      [nzNotFoundContent]="noContent"
+      nzImageStyle="width: 100px; height: 100px; margin-bottom: 16px;"
+    ></nz-empty>
+  }
+  @else {
+    <ul style="margin: 0;" class="max-h-64 overflow-y-auto">
+      @for(data of listData(); track data.user.id) {
+        @let userColorAvatar = getUserColorAvatar(data.user);
+        <li class="flex flex-row space-x-4">
+          <div class="flex flex-col">
+            <div [class]="`w-7 h-7 rounded-full flex justify-center items-center text-slate-200 text-[.7rem] ${userColorAvatar.color}`">
+              <div>
+                {{ userColorAvatar.initials }}
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <h3 class="text-base font-semibold text-gray-800">
+              {{ data.user.first_name }} {{ data.user.last_name }}
+            </h3>
+            <p class="text-sm text-gray-600">
+              {{ data.description }}
+            </p>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>
 
 <ng-template #noContent>
   <span>{{ noContentText() }}</span>

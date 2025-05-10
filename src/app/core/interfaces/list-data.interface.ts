@@ -1,5 +1,7 @@
+import { User } from './user.interface';
+
 export interface ListData {
   name: string;
-  avatar: string;
+  user: User;
   description: string;
 }
