@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -26,8 +27,13 @@ export class HeaderComponent {
     { name: 'Invite Team Members', icon: 'user-add' },
     { name: 'Join Team', icon: 'plus' },
   ];
+  public router = inject(Router);
 
-  public onSelectAction(action: string) {
+  public onSelectAction(action: string): void {
     this.isActionDropdownVisible = false;
+  }
+
+  public navigateToSignUp(): void {
+    this.router.navigate(['/auth/sign-up']);
   }
 }

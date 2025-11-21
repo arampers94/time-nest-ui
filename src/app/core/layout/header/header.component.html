@@ -12,15 +12,17 @@
       <nz-icon 
         nz-dropdown 
         [nzDropdownMenu]="plusMenu"
-        [nzClickHide]="false"
-        [(nzVisible)]="isActionDropdownVisible"
         nzType="plus" 
-        nzTheme="outline" 
         class="cursor-pointer text-lg"
-        nzTrigger="click"
       >
       </nz-icon>
-      <nz-icon nzType="user" nzTheme="outline" class="cursor-pointer text-lg" />
+      <nz-icon 
+        nz-dropdown 
+        [nzDropdownMenu]="profileMenu"
+        nzType="user" 
+        nzTheme="outline" 
+        class="cursor-pointer text-lg" 
+      />
     </div>
   </div>
 </div>
@@ -33,6 +35,19 @@
         {{ action.name }}
       </li>
     }
+  </ul>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #profileMenu="nzDropdownMenu">
+  <ul nz-menu>
+    <li class="px-4 py-2 hover:bg-emerald-200 cursor-pointer" (click)="navigateToSignUp()">
+      <nz-icon nzType="user-add" nzTheme="outline" class="mr-2"></nz-icon>
+      Sign Up
+    </li>
+    <!-- <li class="px-4 py-2 hover:bg-emerald-200 cursor-pointer" (click)="onLogout()">
+      <nz-icon nzType="logout" nzTheme="outline" class="mr-2"></nz-icon>
+      Logout
+    </li> -->
   </ul>
 </nz-dropdown-menu>
 
