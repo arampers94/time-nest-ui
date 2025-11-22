@@ -26,6 +26,7 @@
     "@ngrx/operators": "^20.0.0",
     "@ngrx/signals": "^20.0.0",
     "@ngrx/store": "^20.0.0",
+    "@supabase/supabase-js": "^2.84.0",
     "@tailwindcss/postcss": "^4.1.17",
     "ng-zorro-antd": "^20.0.0",
     "postcss": "^8.5.6",
